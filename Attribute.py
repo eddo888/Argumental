@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+from Argument import Argument
+
+
+class Attribute(Argument):
+    """
+    used for class attributes
+
+    examples:
+    @args.attribute(
+        ...
+    )
+    """
+    def __init__(self, fn=None, kwargs=None):
+        super(Attribute, self).__init__(fn, kwargs)
