@@ -21,7 +21,7 @@ class Value(object):
 
 		self.getter = _getter
 		self.value = value
-
+	
 	def setter(self, object, value):
 		# print 'setter=', value
 		self.value = value

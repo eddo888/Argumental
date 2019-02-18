@@ -753,7 +753,7 @@ def main():
 		args.parse('args'.split())
 		y = args.execute()
 		j = yaml.load(y)
-		print(yaml.dump(j))
+		print(json.dumps(j, indent=4))
 
 	# process other requests
 	else:
@@ -762,6 +762,6 @@ def main():
 		# could just do this below
 		result = args.execute()
 		if result:
-			print(yaml.dump(result))
+			print(json.dumps(result, indent=4))
 
 if __name__ == '__main__': main()

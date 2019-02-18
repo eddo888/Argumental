@@ -16,7 +16,7 @@ class NamedShort(object):
 		_help = _help.rstrip(' ').rstrip('\n')
 		self.help = _help
 		# name : str
-		self.name = kwargs.get('name') or None
+		self.name = kwargs.get('name') or (fn.__name__ if fn else '?')
 		# short : str
 		self.short = kwargs.get('short') or None
 
