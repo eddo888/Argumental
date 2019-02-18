@@ -242,12 +242,13 @@ class Argue(object):
 
 		properties = list()
 		for name, property in inspect.getmembers(_command.fn, predicate=inspect.isdatadescriptor):
-			# print name, property
+			#print(name, property)
 			if hasattr(property, 'fget') and property.fget not in properties:
 				self.addMethod(_command, operations, property.fget)
 				properties.append(property.fget)
 
-		for name, method in inspect.getmembers(_command.fn, predicate=inspect.ismethod):
+		for name, method in inspect.getmembers(_command.fn, predicate=inspect.isfunction):
+			#print(name, method)
 			m = getRoot(method)
 			self.addMethod(_command, operations, m)
 		return
@@ -260,7 +261,7 @@ class Argue(object):
 		fn, _args, _kwargs = getSpec(fn)
 
 		if fn.__name__ in self.attributes.keys():
-			# print fn.__name__, self.attributes.keys()
+			#print(fn.__name__, self.attributes.keys())
 			_attribute = self.attributes[fn.__name__]
 			if _attribute.oneof:
 				self.addOneOf(_command.parser, _attribute)
@@ -511,7 +512,6 @@ class Argue(object):
 		def _wrapit(fn):
 			fn = getRoot(fn)
 			self.operations[fn] = Operation(fn, okwargs)
-
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
 				# self.logger.info(self.report(fn,args,kwargs))
@@ -748,7 +748,7 @@ def main():
 		args.parse('args'.split())
 		y = args.execute()
 		j = yaml.load(y)
-		print(json.dumps(j,indent=4))
+		print(yaml.dump(j))
 
 	# process other requests
 	else:
@@ -757,7 +757,6 @@ def main():
 		# could just do this below
 		result = args.execute()
 		if result:
-			print(json.dumps(result,indent=4))
-
+			print(yaml.dump(result))
 
 if __name__ == '__main__': main()

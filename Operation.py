@@ -37,6 +37,7 @@ class Operation(NamedShort):
 		self.parser = None
 		return
 
+    
 	def propHelp(self):
 		string = self.help.replace('\n', '')
 		while '  ' in string:
