@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import re
+import re,json
 
 from Getters import getSpec
 from NamedShort import NamedShort
@@ -37,7 +37,12 @@ class Operation(NamedShort):
 		self.parser = None
 		return
 
-    
+	def __str__(self):
+		return json.dumps(dict(
+			name=self.name,
+			fn=self.fn.__name__,
+		))
+		
 	def propHelp(self):
 		string = self.help.replace('\n', '')
 		while '  ' in string:

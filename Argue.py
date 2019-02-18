@@ -273,8 +273,8 @@ class Argue(object):
 			_command.attributes[_attribute.name] = _attribute
 			return
 
-		if fn in self.operations.keys():
-			_operation = self.operations[fn]
+		if fn.__qualname__ in self.operations.keys():
+			_operation = self.operations[fn.__qualname__]
 			#print(fn,_operation)
 			
 			if fn in self.returnss.keys():
@@ -513,8 +513,9 @@ class Argue(object):
 
 		def _wrapit(fn):
 			fn = getRoot(fn)
-			self.operations[fn] = Operation(fn, okwargs)
-			print(self.operations[fn])
+			#print(fn.__qualname__)
+			
+			self.operations[fn.__qualname__] = Operation(fn, okwargs)
 			
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
