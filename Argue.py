@@ -31,7 +31,7 @@ class Argue(object):
 		"""
 		create a new parser
 		"""
-		self.logger = logging.getLogger(Argue.__name__)
+		self.logger = logging.getLogger(Argue.__qualname__)
 		self.name = name
 		self.parser = argparse.ArgumentParser(name, conflict_handler='resolve')
 		self.singles = set()
@@ -165,7 +165,7 @@ class Argue(object):
 				_kwargs['type'] = lambda x: datetime.strptime(x, _format).time()
 			else:
 				if _argument.type:
-					_type = _argument.type.__name__
+					_type = _argument.type.__qualname__
 				_kwargs['type'] = _argument.type
 
 		if _argument.flag:
@@ -191,7 +191,7 @@ class Argue(object):
 		private method to add a global argument
 		"""
 		_args, _kwargs = self.addArgument(_argument)
-		self.arguments[_argument.fn.__name__] = _argument
+		self.arguments[_argument.fn.__qualname__] = _argument
 
 		argument = self.parser.add_argument(*_args, **_kwargs)
 		return
@@ -247,7 +247,7 @@ class Argue(object):
 				self.addMethod(_command, operations, property.fget)
 				properties.append(property.fget)
 
-		for name, method in inspect.getmembers(_command.fn, predicate=inspect.isfunction):
+		for name, method in inspect.getmembers(_command.fn, predicate=inspect.isfunction) + inspect.getmembers(_command.fn, predicate=inspect.ismethod):
 			#print(name, method)
 			m = getRoot(method)
 			self.addMethod(_command, operations, m)
@@ -260,10 +260,11 @@ class Argue(object):
 		fn = method #.__func__
 		#print(fn)
 		fn, _args, _kwargs = getSpec(fn)
-
-		if fn.__name__ in self.attributes.keys():
-			#print(fn.__name__, self.attributes.keys())
-			_attribute = self.attributes[fn.__name__]
+		#print(fn,_args,_kwargs)
+		
+		if fn.__qualname__ in self.attributes.keys():
+			#print(fn.__qualname__, self.attributes.keys())
+			_attribute = self.attributes[fn.__qualname__]
 			if _attribute.oneof:
 				self.addOneOf(_command.parser, _attribute)
 				return
@@ -290,9 +291,10 @@ class Argue(object):
 
 			operation.set_defaults(operation=_operation.short or _operation.name, method=fn)
 
-			if fn in self.parameters.keys():
-				for n, p in self.parameters[fn].iteritems():
+			if fn.__qualname__ in self.parameters.keys():
+				for n, p in self.parameters[fn.__qualname__].items():
 					_operation.parameters[n] = p
+					#print(n,p)
 
 			for a in _args:
 				if a in _operation.parameters.keys():
@@ -357,10 +359,10 @@ class Argue(object):
 		"""
 		if self.parsed:
 			fn, args, kwargs = getSpec(fn)
-			if fn.__name__ in self.attributes.keys():
-				attribute = self.attributes[fn.__name__]
-			if fn.__name__ in self.arguments.keys():
-				attribute = self.arguments[fn.__name__]
+			if fn.__qualname__ in self.attributes.keys():
+				attribute = self.attributes[fn.__qualname__]
+			if fn.__qualname__ in self.arguments.keys():
+				attribute = self.arguments[fn.__qualname__]
 			if hasattr(attribute, 'oneof') and attribute.oneof:
 				for o in attribute.oneof:
 					v = getattr(self.parsed, o)
@@ -378,7 +380,7 @@ class Argue(object):
 		private method to log the method calls
 		"""
 		return '%s(args="%s", kwargs="%s")' % (
-			fn.__name__,
+			fn.__qualname__,
 			','.join(args[1:]),
 			','.join(
 				map(
@@ -399,7 +401,7 @@ class Argue(object):
 		def _wrapit(fn):
 			fn = getRoot(fn)
 			_argument = Argument(fn, kwargs=fkwargs)
-			self.arguments[fn.__name__] = _argument
+			self.arguments[fn.__qualname__] = _argument
 
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
@@ -451,13 +453,13 @@ class Argue(object):
 		def _wrapit(fn):
 			fn = getRoot(fn)
 			_attribute = Attribute(fn, kwargs=fkwargs)
-			self.attributes[fn.__name__] = _attribute
+			self.attributes[fn.__qualname__] = _attribute
 
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
 				# self.logger.info(self.report(fn,args,kwargs))
 				return self.getReturn(fn) or fn(*args, **kwargs)
-			value = Value(fn.__name__,
+			value = Value(fn.__qualname__,
 				getter = _wrapper,
 				value = _attribute.default
 			)
@@ -488,7 +490,7 @@ class Argue(object):
 		def _wrapit(fn):
 			fn = getRoot(fn)
 			_attribute = Attribute(fn, kwargs=fkwargs)
-			self.attributes[fn.__name__] = _attribute
+			self.attributes[fn.__qualname__] = _attribute
 
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
@@ -537,9 +539,10 @@ class Argue(object):
 		usage: @args.parameter(<Parameter>...)
 		"""
 		def _add(fn, p):
-			if fn not in self.parameters.keys():
-				self.parameters[fn] = dict()
-			self.parameters[fn][p.param] = p
+			fn = getRoot(fn)
+			if fn.__qualname__ not in self.parameters.keys():
+				self.parameters[fn.__qualname__] = dict()
+			self.parameters[fn.__qualname__][p.param] = p
 
 		def _wrapit(fn):
 			fn = getRoot(fn)
@@ -657,7 +660,7 @@ class Argue(object):
 			command = self.parsed.clasz()
 
 			if hasattr(self.parsed, 'method'):
-				operation = getattr(command, self.parsed.method.__name__)
+				operation = getattr(command, self.parsed.method.__qualname__)
 
 				_funct, _args, _kwargs = getSpec(self.parsed.method)
 				params = self.commands[self.parsed.command].operations[self.parsed.operation].parameters

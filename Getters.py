@@ -20,17 +20,23 @@ def getSpec(fn):
 	"""
 	get functional specification
 	"""
-	params = inspect.getfullargspec(fn)
+	signature = inspect.signature(fn)
+	#print(signature)
+	#print(signature.parameters)
+	
 	_args = list()
-	for a in params.args[1:]:
-		_args.append(a)
 	_kwargs = dict()
-	values = []
-	if params.defaults:
-		values = list(params.defaults)
-		values.reverse()
-	for v in values:
-		n = _args.pop()
-		_kwargs[n] = v
+	
+	for name, parameter in signature.parameters.items():
+		#print(name,parameter)
+		if '=' in str(parameter):
+			_kwargs[parameter.name] = parameter.default
+		else:
+			_args.append(name)
+	
 	return fn, _args, _kwargs
 
+if __name__ == '__main__':
+	def method(a,b=2):
+		return
+	print(getSpec(method))
