@@ -258,6 +258,7 @@ class Argue(object):
 		private method to add an operation or class method
 		"""
 		fn = method #.__func__
+		#print(fn)
 		fn, _args, _kwargs = getSpec(fn)
 
 		if fn.__name__ in self.attributes.keys():
@@ -274,7 +275,8 @@ class Argue(object):
 
 		if fn in self.operations.keys():
 			_operation = self.operations[fn]
-
+			#print(fn,_operation)
+			
 			if fn in self.returnss.keys():
 				_operation.returns = self.returnss[fn]
 			if hasattr(_operation, 'returns'):
@@ -512,6 +514,8 @@ class Argue(object):
 		def _wrapit(fn):
 			fn = getRoot(fn)
 			self.operations[fn] = Operation(fn, okwargs)
+			print(self.operations[fn])
+			
 			@wraps(fn)
 			def _wrapper(*args, **kwargs):
 				# self.logger.info(self.report(fn,args,kwargs))

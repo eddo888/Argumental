@@ -9,7 +9,7 @@ class Attribute(Argument):
 	
 	examples:
 	@args.attribute(
-	...
+		...
 	)
 	"""
 	def __init__(self, fn, kwargs=None):
