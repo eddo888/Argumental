@@ -32,7 +32,8 @@ def getSpec(fn):
 		if '=' in str(parameter):
 			_kwargs[parameter.name] = parameter.default
 		else:
-			_args.append(name)
+			if name != 'self':
+				_args.append(name)
 	
 	return fn, _args, _kwargs
 

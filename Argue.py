@@ -660,7 +660,7 @@ class Argue(object):
 			command = self.parsed.clasz()
 
 			if hasattr(self.parsed, 'method'):
-				operation = getattr(command, self.parsed.method.__qualname__)
+				operation = getattr(command, self.parsed.method.__name__)
 
 				_funct, _args, _kwargs = getSpec(self.parsed.method)
 				params = self.commands[self.parsed.command].operations[self.parsed.operation].parameters
