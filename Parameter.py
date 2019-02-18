@@ -24,7 +24,7 @@ class Parameter(NamedShort):
 		required=False,
 		metavar=None
 	):
-		super(Parameter, self).__init__()
+		super(Parameter, self).__init__(None)
 		self.param = param or name  # str
 		self.name = name or param  # str
 		self.short = short  # str[1]

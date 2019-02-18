@@ -13,7 +13,7 @@ class Command(NamedShort):
         short="c"        # use c instead
     )
     """
-    def __init__(self, fn=None, kwargs=None):
+    def __init__(self, fn, kwargs=None):
         super(Command, self).__init__(fn, kwargs)
         # single : bool
         self.single = kwargs.get('single') or False

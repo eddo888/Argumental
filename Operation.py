@@ -19,7 +19,7 @@ class Operation(NamedShort):
 	method parameters will be processed using PyDoc notation
 	"""
 
-	def __init__(self, fn=None, kwargs=None):
+	def __init__(self, fn, kwargs=None):
 		super(Operation, self).__init__(fn, kwargs)
 		self.parameters = dict()
 		# process help

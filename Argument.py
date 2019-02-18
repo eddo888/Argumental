@@ -21,7 +21,7 @@ class Argument(NamedShort):
     )
     """
 
-    def __init__(self, fn=None, kwargs=None):
+    def __init__(self, fn, kwargs=None):
         super(Argument, self).__init__(fn, kwargs)
         self.flag       = kwargs.get('flag')       or False  # bool
         self.required   = kwargs.get('required')   or False  # bool

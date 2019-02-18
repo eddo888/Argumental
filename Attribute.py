@@ -12,5 +12,5 @@ class Attribute(Argument):
         ...
     )
     """
-    def __init__(self, fn=None, kwargs=None):
+    def __init__(self, fn, kwargs=None):
         super(Attribute, self).__init__(fn, kwargs)
