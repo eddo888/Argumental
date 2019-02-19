@@ -112,7 +112,7 @@ class ForTheSake(object):
 	#_________________________________________________________
 	
 	@args.operation
-	def myMethod(self, p1, p2, p3='d3', p4='d4'):
+	def myMethod(self, p1, p2:int, p3='d3', p4='d4') -> dict:
 		'''
 		this should be called myMethod
 		and is a good example
