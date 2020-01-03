@@ -641,7 +641,7 @@ class Argue(object):
 		"""
 		self.parse()
 
-		if self.parsed.command == 'args':
+		if getattr(self.parsed, 'command', None) == 'args':
 			self.clean()
 			yd = yaml.dump(self.values(), default_flow_style=False)
 			sio = StringIO()
@@ -755,7 +755,7 @@ def main():
 		# yaml spec for help
 		args.parse('args'.split())
 		y = args.execute()
-		j = yaml.load(y, Loader=yaml.FullLoader)
+		j = yaml.load(y)
 		print(json.dumps(j, indent=4))
 
 	# process other requests
