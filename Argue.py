@@ -755,7 +755,7 @@ def main():
 		# yaml spec for help
 		args.parse('args'.split())
 		y = args.execute()
-		j = yaml.load(y)
+		j = yaml.load(y, Loader=yaml.FullLoader)
 		print(json.dumps(j, indent=4))
 
 	# process other requests
