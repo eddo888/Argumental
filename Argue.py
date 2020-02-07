@@ -2,7 +2,7 @@
 
 # PYTHON_ARGCOMPLETE_OK
 
-import os, sys, re, yaml, json, yaml, argparse, time, logging, inspect, traceback, atexit, argcomplete
+import os, sys, re, json, argparse, time, logging, inspect, traceback, atexit, argcomplete
 
 from io import StringIO
 from datetime import datetime, date
@@ -596,7 +596,7 @@ class Argue(object):
 			argcomplete.autocomplete(self.parser)
 
 			if self.subParsers:
-				argsParser = self.subParsers.add_parser('args', help='print the yaml for the args')
+				argsParser = self.subParsers.add_parser('args', help='print the values for the args')
 				argsParser.set_defaults(command='args')
 
 			# add the global arguments
@@ -643,18 +643,7 @@ class Argue(object):
 
 		if getattr(self.parsed, 'command', None) == 'args':
 			self.clean()
-			yd = yaml.dump(self.values(), default_flow_style=False)
-			sio = StringIO()
-			for line in yd.split('\n'):
-				if '!!' in line:
-					sio.write('%s\n' % (line[0:line.find('!!')]))
-				elif line.endswith(': null'):
-					pass
-				elif line.endswith(': \'\''):
-					pass
-				else:
-					sio.write('%s\n' % line)
-			return sio.getvalue()
+			return self.values()
 
 		if hasattr(self.parsed, 'clasz'):
 			command = self.parsed.clasz()
@@ -752,11 +741,9 @@ def main():
 
 	# get the args tree in colour
 	if len(sys.argv) == 1:
-		# yaml spec for help
 		args.parse('args'.split())
-		y = args.execute()
-		j = yaml.load(y)
-		print(json.dumps(j, indent=4))
+		j = args.execute()
+		print(j)
 
 	# process other requests
 	else:
