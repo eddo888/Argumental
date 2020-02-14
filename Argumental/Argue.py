@@ -9,15 +9,15 @@ from datetime import datetime, date
 from collections import namedtuple
 from functools import wraps
 
-from Getters import getRoot, getSpec
-from NamedShort import NamedShort
-from Argument import Argument
-from Attribute import Attribute
-from Command import Command
-from Operation import Operation
-from Parameter import Parameter
-from Returns import Returns
-from Value import Value
+from Argumental.Getters import getRoot, getSpec
+from Argumental.NamedShort import NamedShort
+from Argumental.Argument import Argument
+from Argumental.Attribute import Attribute
+from Argumental.Command import Command
+from Argumental.Operation import Operation
+from Argumental.Parameter import Parameter
+from Argumental.Returns import Returns
+from Argumental.Value import Value
 
 
 #________________________________________________________________________________________

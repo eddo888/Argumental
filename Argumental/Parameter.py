@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from NamedShort import NamedShort
+from Argumental.NamedShort import NamedShort
 
 
 class Parameter(NamedShort):

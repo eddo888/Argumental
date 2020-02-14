@@ -2,9 +2,9 @@
 
 import re,json
 
-from Getters import getSpec
-from NamedShort import NamedShort
-from Parameter import Parameter
+from Argumental.Getters import getSpec
+from Argumental.NamedShort import NamedShort
+from Argumental.Parameter import Parameter
 
 
 class Operation(NamedShort):

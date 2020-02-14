@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from Argument import Argument
+from Argumental.Argument import Argument
 
 
 class Attribute(Argument):
