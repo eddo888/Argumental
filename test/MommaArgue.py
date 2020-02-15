@@ -2,7 +2,7 @@
 
 import os,re,sys
 
-from Tools.argue import Argue
+from Argumental.Argue import Argue
 
 args=Argue()
 

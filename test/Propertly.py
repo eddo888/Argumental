@@ -4,8 +4,8 @@ import os,re,sys,json,yaml
 
 from StringIO import StringIO
 
-from Tools.pretty import prettyPrint
-from Tools.argue import Argue
+from Perdy.pretty import prettyPrint
+from Argumental.Argue import Argue
 
 args = Argue()
 

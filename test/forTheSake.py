@@ -5,7 +5,7 @@ import os,re,sys,json,unittest,logging
 if '..' not in sys.path:
 	sys.path.append("..") # Adds higher directory to python modules path.
 
-from Argue import Argue
+from Argumental.Argue import Argue
 
 args = Argue()
 

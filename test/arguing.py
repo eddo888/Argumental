@@ -2,7 +2,7 @@
 
 import os,sys,re,logging
 
-from Tools.argue import Argue
+from Argumental.Argue import Argue
 
 logging.basicConfig(level=logging.INFO)
 logging.disable(Argue.__name__)

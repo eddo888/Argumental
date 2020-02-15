@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from Tools.argue import Argue
+from Argumental.Argue import Argue
 
 args = Argue()
 
