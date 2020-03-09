@@ -48,12 +48,18 @@ class Argue(object):
 		return
 
 	def __del__(self):
-		del self.parsed
-		del self.arguments
-		del self.commands
-		del self.attributes
-		del self.operations
-		del self.parser
+		if self.parsed:
+			del self.parsed
+		if self.arguments:
+			del self.arguments
+		if self.commands:
+			del self.commands
+		if self.attributes:
+			del self.attributes
+		if self.operations:
+			del self.operations
+		if self.parser:
+			del self.parser
 		return
 
 	def values(self):
