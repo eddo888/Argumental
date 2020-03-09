@@ -48,18 +48,9 @@ class Argue(object):
 		return
 
 	def __del__(self):
-		if self.parsed:
-			del self.parsed
-		if self.arguments:
-			del self.arguments
-		if self.commands:
-			del self.commands
-		if self.attributes:
-			del self.attributes
-		if self.operations:
-			del self.operations
-		if self.parser:
-			del self.parser
+		for aspect in ['parsed','arguments','commands','attributes','operations','parser']:
+			if hasattr(self, aspect):
+				delattr(self, aspect)
 		return
 
 	def values(self):
