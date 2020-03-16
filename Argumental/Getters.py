@@ -7,9 +7,9 @@ def getRoot(fn):
 	"""
 	dig down the closure stack to find the root function
 	"""
-	# print('fn=', fn, ', name=', fn.__name)
+	#print('fn=', fn, ', name=', fn.__name__)
 	while hasattr(fn, 'func_closure') and fn.func_closure:
-		# print('fn.func_closure=', fn.func_closure)
+		#print('fn.func_closure=', fn.func_closure)
 		if len(fn.func_closure) == 0:
 			break
 		fn = fn.func_closure[0].cell_contents
@@ -36,6 +36,7 @@ def getSpec(fn):
 				_args.append(name)
 	
 	return fn, _args, _kwargs
+
 
 if __name__ == '__main__':
 	def method(a,b=2):

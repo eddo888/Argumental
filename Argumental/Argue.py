@@ -425,17 +425,16 @@ class Argue(object):
 
 		def _wrapit(fn):
 			
-			_fn = getRoot(fn)
-			self.addCommand(Command(_fn, ckwargs))
+			fn = getRoot(fn)
+			self.addCommand(Command(fn, ckwargs))
 
-			@wraps(_fn)
+			@wraps(fn)
 			def _wrapper(*args, **kwargs):
 				# self.logger.info(self.report(fn,args,kwargs))
-				return _fn(*args, **kwargs)
+				return fn(*args, **kwargs)
 
-			_wrapper.__name__ = fn.__name__
-			_wrapper.__qualname__ = fn.__qualname__
-			_wrapper.__module__ = fn.__module__
+			_wrapper.__bases__ = (fn, )
+
 			return _wrapper
 
 		if len(cargs) == 0:
@@ -755,5 +754,6 @@ def main():
 		result = args.execute()
 		if result:
 			print(json.dumps(result, indent=4))
+
 
 if __name__ == '__main__': main()

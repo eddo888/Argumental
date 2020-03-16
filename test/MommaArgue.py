@@ -1,6 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os,re,sys
+
+sys.path.append('..')
 
 from Argumental.Argue import Argue
 
@@ -11,7 +13,7 @@ def verbose():
     return False
 
 @args.command(name='mum')
-class MommaArgue(object):
+class MommaArgue:
 
     @args.attribute
     def mommy(self):
@@ -22,5 +24,5 @@ class MommaArgue(object):
         return self.mommy()
         
 if __name__ == '__main__':
-    print args.execute()
+    print(args.execute())
     
