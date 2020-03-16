@@ -257,7 +257,7 @@ class Argue(object):
 		fn = method #.__func__
 		#print(fn)
 		fn, _args, _kwargs = getSpec(fn)
-		#print(fn,_args,_kwargs)
+		print(fn,_args,_kwargs)
 		
 		if fn.__qualname__ in self.attributes.keys():
 			#print(fn.__qualname__, self.attributes.keys())
@@ -433,7 +433,7 @@ class Argue(object):
 				# self.logger.info(self.report(fn,args,kwargs))
 				return fn(*args, **kwargs)
 
-			_wrapper.__bases__ = (fn, )
+			#_wrapper.__bases__ = (fn, )
 
 			return _wrapper
 

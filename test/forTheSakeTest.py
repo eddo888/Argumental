@@ -35,9 +35,10 @@ class ForTheSakeTest(unittest.TestCase):
 		print(args.execute())
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
+		#print(stdout)
 		assert len(stderr) == 0
-		assert stdout.startswith('arguments:')
+		#print(type(stdout))
+		assert 'arguments' in stdout
 		
 	#________________________________________________________
 	def test_01_BaseHelp(self):
