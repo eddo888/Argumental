@@ -14,7 +14,7 @@ def debug():
 	return False
 
 @args.command(name='bub')
-class BubbaArgue:
+class BubbaArgue(MommaArgue):
 
 	@args.attribute
 	def bubby(self):
@@ -28,7 +28,7 @@ class BubbaArgue:
 	def bubba(self):
 		return self.bubby()
 
-BubbaArgue.__bases__ += (MommaArgue,)
+#BubbaArgue.__bases__ += (MommaArgue,)
 
 if __name__ == '__main__':
 	print(args.execute())
