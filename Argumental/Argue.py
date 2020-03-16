@@ -434,8 +434,8 @@ class Argue(object):
 				return _fn(*args, **kwargs)
 
 			_wrapper.__name__ = fn.__name__
-			_wrapper.__qualname__ == fn.__qualname__
-			_wrapper.__module__ == fn.__module__
+			_wrapper.__qualname__ = fn.__qualname__
+			_wrapper.__module__ = fn.__module__
 			return _wrapper
 
 		if len(cargs) == 0:
