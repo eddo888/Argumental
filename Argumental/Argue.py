@@ -424,13 +424,18 @@ class Argue(object):
 		# todo, store and review children before building args
 
 		def _wrapit(fn):
-			fn = getRoot(fn)
-			self.addCommand(Command(fn, ckwargs))
+			
+			_fn = getRoot(fn)
+			self.addCommand(Command(_fn, ckwargs))
 
-			@wraps(fn)
+			@wraps(_fn)
 			def _wrapper(*args, **kwargs):
 				# self.logger.info(self.report(fn,args,kwargs))
-				return fn(*args, **kwargs)
+				return _fn(*args, **kwargs)
+
+			_wrapper.__name__ = fn.__name__
+			_wrapper.__qualname__ == fn.__qualname__
+			_wrapper.__module__ == fn.__module__
 			return _wrapper
 
 		if len(cargs) == 0:
