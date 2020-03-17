@@ -438,16 +438,8 @@ class Argue(object):
 		"""
 		
 		def _wrapit(Cls):
-			
-			#Cls = getRoot(Cls)
 			self.addCommand(Command(Cls, ckwargs))
-	
-			class NewCls(Cls):
-				
-				def __getattribute__(self, a):
-					return getattr(super(), a)
-				  
-			return NewCls
+			return Cls
 		
 		def _actualWrapper(fn):
 			return _wrapit(fn)
