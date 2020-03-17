@@ -171,8 +171,8 @@ class ForTheSakeTest(unittest.TestCase):
 		results = args.execute()
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		print(stdout, stderr)
-		print(json.dumps(results, indent=4))
+		#print(stdout, stderr)
+		#print(json.dumps(results, indent=4))
 		assert len(stderr) == 0
 		logging.debug(json.dumps(results,indent=4))
 		assert results['choice'] == None

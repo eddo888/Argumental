@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# PYTHON_ARGCOMPLETE_OK
+
 import os,re,sys,json,unittest,logging
 
 if '..' not in sys.path:
