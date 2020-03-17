@@ -22,7 +22,7 @@ def testing(): return False
 
 #=============================================================
 
-@args.command
+@args.command()
 class ForTheSake(object):
 	'''
 	This the first level option and should be called 'ForTheSake'

@@ -436,30 +436,22 @@ class Argue(object):
 		usage: @args.command(<Command>...)
 		where the class Command defines the parameters to the decorator call
 		"""
-
-		# todo, store and review children before building args
-
-		def _wrapit(fn):
+		
+		def _wrapit(Cls):
 			
-			fn = getRoot(fn)
-			self.addCommand(Command(fn, ckwargs))
-
-			@wraps(fn)
-			def _wrapper(*args, **kwargs):
-				# self.logger.info(self.report(fn,args,kwargs))
-				return fn(*args, **kwargs)
-
-			#_wrapper.__bases__ = (fn, )
-
-			return _wrapper
-
-		if len(cargs) == 0:
-			def _actualWrapper(fn):
-				return _wrapit(fn)
-			return _actualWrapper
-		else:
-			fn = cargs[0]
+			#Cls = getRoot(Cls)
+			self.addCommand(Command(Cls, ckwargs))
+	
+			class NewCls(Cls):
+				
+				def __getattribute__(self, a):
+					return getattr(super(), a)
+				  
+			return NewCls
+		
+		def _actualWrapper(fn):
 			return _wrapit(fn)
+		return _actualWrapper
 
 	def property(self, *fargs, **fkwargs):
 		"""
