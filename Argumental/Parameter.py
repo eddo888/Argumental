@@ -39,3 +39,7 @@ class Parameter(NamedShort):
 		self.positional = positional  # bool
 		self.required = required  # bool
 		self.metavar = metavar  # str
+
+	def __str__(self):
+		return 'name=%s, type=%s, default=%s'%(self.name, self.type, self.default)
+		

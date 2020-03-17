@@ -112,29 +112,10 @@ class ForTheSake(object):
 	#_________________________________________________________
 	
 	@args.operation
-	def myMethod(self, p1, p2:int, p3='d3', p4='d4') -> dict:
+	def myMethod(self, p1, p2:int, p3='d3', p4:int=4) -> dict:
 		'''
 		this should be called myMethod
 		and is a good example
-		
-		:param   p1 : p1 should be expected
-		:type    p1 : str
-		
-		:param   p2 : p2 should be expected
-		:type    p2 : int
-		:default p2 : 3
-		
-		:param   p3 : p3 is optional use --p3
-		:default p3 : d3
-		:param   p4 : p4 is optional use --p4
-		
-		:return     : json view of all variables
-		:rtype      : dict
-		
-		:Example:
-		
-		$ ./forTheSake.py [--] <command> <operation> <parameters> [--parameter=optional]
-		
 		'''
 		return {
 			'verbose'   : verbose(),

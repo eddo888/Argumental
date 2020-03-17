@@ -4,6 +4,8 @@
 
 import os, sys, re, json, argparse, time, logging, inspect, traceback, atexit, argcomplete
 
+#sys.path.append('..')
+
 from io import StringIO
 from datetime import datetime, date
 from collections import namedtuple
@@ -250,6 +252,16 @@ class Argue(object):
 			self.addMethod(_command, operations, m)
 		return
 
+	def getTipe(self, a):
+		#print(a)
+		if ':' in a: 
+			parts = a.split(':')
+			tipe = eval(parts[-1])
+			a = parts[0]
+		else:
+			tipe = str
+		return (a,tipe)
+		
 	def addMethod(self, _command, operations, method):
 		"""
 		private method to add an operation or class method
@@ -257,7 +269,7 @@ class Argue(object):
 		fn = method #.__func__
 		#print(fn)
 		fn, _args, _kwargs = getSpec(fn)
-		print(fn,_args,_kwargs)
+		#print(fn,_args,_kwargs)
 		
 		if fn.__qualname__ in self.attributes.keys():
 			#print(fn.__qualname__, self.attributes.keys())
@@ -293,14 +305,18 @@ class Argue(object):
 					_operation.parameters[n] = p
 					#print(n,p)
 
+			#print(_operation.parameters)
 			for a in _args:
+				(a, tipe) = self.getTipe(a)
 				if a in _operation.parameters.keys():
 					p = _operation.parameters[a]
 					p.positional = True
+					p.type = tipe
 					__args, __kwargs = self.addArgument(p)
 					operation.add_argument(*__args, **__kwargs)
 
 			for a in _kwargs.keys():
+				(a, tipe) = self.getTipe(a)
 				if a in _operation.parameters.keys():
 					p = _operation.parameters[a]
 					if p.oneof:
@@ -616,6 +632,7 @@ class Argue(object):
 		return self.parsed
 
 	def getValue(self, params, name):
+		name = name.split(':')[0]
 		if hasattr(params[name], 'oneof') and params[name].oneof:
 			for o in params[name].oneof:
 				v = getattr(self.parsed, o)
@@ -659,9 +676,11 @@ class Argue(object):
 				__kwargs = dict()
 
 				for arg in _args:
+					arg = arg.split(':')[0]
 					__args.append(self.getValue(params, arg))
 
 				for key, value in _kwargs.items():
+					key = key.split(':')[0]
 					__kwargs[key] = self.getValue(params, key) or value
 
 				# if hasattr(command,'__del__'): atexit.register(command.__del__)

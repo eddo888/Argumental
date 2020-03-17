@@ -91,6 +91,7 @@ class ForTheSakeTest(unittest.TestCase):
 		args.parsed = args.parser.parse_args(line.split(' '))
 		results = args.execute()
 		stdout, stderr = holdme.get()
+		#print(stdout, stderr)
 		holdme.unset()
 		assert len(stderr) == 0
 		logging.debug(json.dumps(results,indent=4))
@@ -164,14 +165,14 @@ class ForTheSakeTest(unittest.TestCase):
 	#________________________________________________________
 	def test_09_SomeParameters(self):
 		line = 'ForTheSake --myRequired ok myMethod 1 2 --p3=3'
-		print(line)
+		#print(line)
 		holdme.set()
 		args.parsed = args.parser.parse_args(line.split(' '))
 		results = args.execute()
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		print(stdout, stderr)
-		print(json.dumps(results, indent=4))
+		#print(stdout, stderr)
+		#print(json.dumps(results, indent=4))
 		assert len(stderr) == 0
 		logging.debug(json.dumps(results,indent=4))
 		assert results['choice'] == None
@@ -188,7 +189,7 @@ class ForTheSakeTest(unittest.TestCase):
 		assert results['p1'] == '1'
 		assert results['p2'] == 2
 		assert results['p3'] == '3'
-		assert results['p4'] == 'd4'
+		assert results['p4'] == 4
 		
 	#________________________________________________________
 	def test_10_AllParameters(self):
@@ -265,6 +266,7 @@ class ForTheSakeTest(unittest.TestCase):
 		results = args.execute()
 		stdout, stderr = holdme.get()
 		holdme.unset()
+		#print(stdout, stderr)
 		assert len(stderr) == 0
 		logging.debug(json.dumps(results,indent=4))
 		assert results['shorted'] == 'ss'
@@ -346,13 +348,14 @@ class ForTheSakeTest(unittest.TestCase):
 		shouter.setSettable('preset')
 		isSet = shouter.getSettable()
 		assert isSet == 'preset'
-		results = shouter.myMethod('1','2',p3='3')
+		results = shouter.myMethod('1',2,p3='3')
 		assert results['p1'] == '1'
-		assert results['p2'] == '2'
+		assert results['p2'] == 2
 		assert results['p3'] == '3'
-		assert results['p4'] == 'd4'
+		assert results['p4'] == 4
 		logging.debug(json.dumps(results,indent=4))
 		del shouter
+
 	#________________________________________________________
 	def test_21_DodgySingle(self):
 		holdme.set()

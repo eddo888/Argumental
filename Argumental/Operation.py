@@ -25,11 +25,17 @@ class Operation(NamedShort):
 		# process help
 		self.parameters = {}
 		funct, _args, _kwargs = getSpec(fn)
+		
 		for a in _args:
+			a = a.split(':')[0]
 			self.parameters[a] = Parameter(a)
+			#print(self.parameters[a])
+		
 		for a in _kwargs.keys():
+			a = a.split(':')[0]
 			self.parameters[a] = Parameter(a)
-
+			#print(self.parameters[a])
+			
 		if '@args.parameter' in self.help:
 			self.propHelp()
 		else:

@@ -28,17 +28,18 @@ def getSpec(fn):
 	_kwargs = dict()
 	
 	for name, parameter in signature.parameters.items():
-		#print(name,parameter)
+		signature = str(parameter).split('=')[0]
+		#print(name, signature, parameter)
 		if '=' in str(parameter):
-			_kwargs[parameter.name] = parameter.default
+			_kwargs[signature] = parameter.default
 		else:
 			if name != 'self':
-				_args.append(name)
+				_args.append(signature)
 	
 	return fn, _args, _kwargs
 
 
 if __name__ == '__main__':
-	def method(a,b=2):
+	def method(a,b:int,c=2,d:int=3):
 		return
 	print(getSpec(method))
