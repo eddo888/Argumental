@@ -9,147 +9,125 @@ A tool to decorate a python class to create an argparse ready command line appli
 Here is an example application
 
 ```python
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os,re,sys,json
 
 from Argumental.Argue import Argue
 
+# the argument decorator
 args = Argue()
 
-#====================================================================================================
-@args.function(short='v', flag=True)
-def verbose(): return False
+# create a root level argparse argument.
+@args.argument(short='v', flag=True)
+def verbose():
+	"""
+	detailed output mode
+	"""
+	return False
 
-#====================================================================================================
-@args.command(single=True)
-class ForTheSake(object):
+# create a subparser based on the class
+@args.command(name="class", single=False) # True to bypass to methods
+class MyClass(object):
+	"""
+	My Class
+	"""
 
-    #________________________________________________________________________________________________
-    @args.function(flag=True)
-    def myFlag(self):
-        '''
-        this is a flag true if exists false if not
-        '''
-        return False
+	# add an argparse value as a property, override class attributes
+	@args.property(
+		short='v',
+		default='abc123',
+		help='with built in setter and deleter'
+	)
+	def value(self): return
 
-    #________________________________________________________________________________________________
-    @args.function(choices=['a','b'])
-    def myChoice(self):
-        '''
-        select for a list of choices,
-        test if in or out of list
-        '''
-        return None
+	# declare the method as a sub parser with method parameters
+	@args.operation(
+		name='method'
+	)
+	@args.parameter(
+		param='myParameter',
+		short='p',
+		name='parameter',
+		required=True,
+		help='My Parameter'
+	)
+	@args.returns(
+		type=dict,
+		help='test values'
+	)
+	def myOperation(self, myParameter=None):
+		"""
+		My Operation
+		"""
+		return dict(
+			myParameter=myParameter,
+			value=self.value
+		)
 
-    #________________________________________________________________________________________________
-    @args.function(short='n', type=int)
-    def myNumber(self):
-        '''
-        this should expect an number of type int 
-        '''
-        return 0
 
-    #________________________________________________________________________________________________
-    @args.operation
-    def myMethod(self, p1, p2, p3='d3', p4='d4'):
-        '''
-        this should be called myMethod
-        and is a good example
-
-        :param p1: p1 should be expected
-        :type p1: str
-        :param p2: p2 should be expected
-        :type p2: int
-        :param p3: p3 is optional use --p3 and defaults to d3
-        :param p4: p3 is optional use --p4 and defaults to d4
-        :return: json view of all variables
-        :rtype: dict
-
-        :Example:
-
-        $ ./forTheSake.py [--] <command> <operation> <parameters> [--parameter=optional]
-
-        '''
-        return {
-            'verbose' :  verbose(),
-            'flag' :     self.myFlag(),
-            'choice' :   self.myChoice(),
-            'number' :   self.myNumber(),
-            'p1' :       p1,
-            'p2' :       p2,
-            'p3' :       p3,
-            'p4' :       p4
-        }
-        
-#====================================================================================================
-if __name__ == '__main__':
-    print json.dumps(args.execute(), indent=4)
+if __name__ == '__main__': args.execute()
 ```
 
 
-A sample usage would look like;
+# output
 
 ```bash
-$ ./ofTheEngagement.py -h
-usage: ofTheEngagement.py [-h] [--args] [-n MYNUMBER] [--myChoice {a,b}] [--myFlag] [-v]
-                          {OfTheEngagment} ...
+$ ./MyClass.py -h
+
+usage: Argue.py [-h] [-v] {class,args} ...
 
 positional arguments:
-  {OfTheEngagment}
-    OfTheEngagment
+  {class,args}   commands
+    class        My Class
+    args         print the values for the args
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --verbose  detailed output mode
+```
+
+# sub paser for class
+
+```bash
+$ ./MyClass.py class -h
+
+usage: Argue.py class [-h] [-v VALUE] {method} ...
+
+positional arguments:
+  {method}              operations
+    method              My Operation
 
 optional arguments:
   -h, --help            show this help message and exit
-  --args                show this argument tree
-  -n MYNUMBER, --myNumber MYNUMBER
-                        <type 'int'> this should expect an number of type int
-  --myChoice {a,b}      select for a list of choices, test if in or out of list
-  --myFlag              this is a flag true if exists false if not
-  -v, --verbose
+  -v VALUE, --value VALUE
+                        with built in setter and deleter, default=abc123
+
 ```
 
+# sub parser for method
 
 ```bash
-$ ./ofTheEngagement.py OfTheEngagment -h
-usage: ofTheEngagement.py OfTheEngagment [-h] {myMethod} ...
+$ ./MyClass.py class method -h
 
-positional arguments:
-  {myMethod}
-    myMethod  this should be called myMethod and is a good example
+usage: Argue.py class method [-h] -p PARAMETER
 
 optional arguments:
-  -h, --help  show this help message and exit
+  -h, --help            show this help message and exit
+  -p PARAMETER, --parameter PARAMETER
+                        My Parameter
 
 ```
 
-```bash
-$ ./ofTheEngagement.py OfTheEngagment myMethod -h
-usage: ofTheEngagement.py OfTheEngagment myMethod [-h] [--p3 P3] [--p4 P4] p1 p2
-
-positional arguments:
-  p1          <type 'str'> p1 should be expected
-  p2          <type 'int'> p2 should be expected
-
-optional arguments:
-  -h, --help  show this help message and exit
-  --p3 P3     <type 'str'> p3 is optional use --p3 and defaults to d3
-  --p4 P4     <type 'str'> p3 is optional use --p4 and defaults to d4
-```
+# and calling the method
 
 ```bash
-$ ./ofTheEngagement.py -v --myFlag OfTheEngagment myMethod 1 2 --p3=3
+$ ./MyClass.py class -v myv method -p myp
+
 {
-    "p2": 2, 
-    "p3": "3", 
-    "flag": true, 
-    "p1": "1", 
-    "verbose": true, 
-    "p4": "d4", 
-    "number": 0, 
-    "choice": null
+    "myParameter": "myp",
+    "value": "myv"
 }
+
 ```
-
-
 
