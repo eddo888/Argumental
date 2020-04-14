@@ -26,6 +26,11 @@ def verbose():
 	"""
 	return False
 
+## simple arg main code
+# args.parse()
+# print(args.verbose())
+## or create a reusable decorated class for the command line
+
 # create a subparser based on the class
 @args.command(name="class", single=False) # True to bypass to methods
 class MyClass(object):
