@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 
 class NamedShort(object):
 	"""
@@ -11,7 +12,11 @@ class NamedShort(object):
 		if not kwargs:
 			kwargs = dict()
 		# documentation
-		_help = kwargs.get('help') or self.fn.__doc__ or ''
+		doc = self.fn.__doc__
+		if doc:
+			doc = re.sub('^\s+','',doc,flags=re.MULTILINE)
+
+		_help = kwargs.get('help') or doc or ''
 		_help = _help.lstrip('\n').lstrip(' ')
 		_help = _help.rstrip(' ').rstrip('\n')
 		self.help = _help

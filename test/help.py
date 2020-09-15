@@ -4,22 +4,21 @@
 
 import sys, os, re
 
-#sys.path.insert(0,'..')
+sys.path.insert(0,'..')
 
 from Argumental.Argue import Argue
 
-args = Argue(help='''one
-two''')
+args = Argue() #help='''one\ntwo''')
 
 #_________________________________________________________________
-@args.command(help='three\nfour')
+@args.command() #(help='three\nfour')
 class Helper(object):
 	'''
 	this is the helper class documentation
 	with multiple lines
 	'''
 
-	@args.operation(help='five\nsix')
+	@args.operation #(help='five\nsix')
 	def helping(self):
 		'''
 		this is the helping method documentation

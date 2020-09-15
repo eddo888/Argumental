@@ -219,6 +219,7 @@ class Argue(object):
 				if len(self.commands) == 0:
 					self.singles.add(_command.fn)
 					_command.parser = self.parser
+					self.parser.description = _command.help
 				else:
 					sys.stderr.write('non single already defined, ignoring single %s\n' % name)
 					return
