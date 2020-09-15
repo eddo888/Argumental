@@ -4,7 +4,7 @@
 
 import os, sys, re, json, argparse, time, logging, inspect, traceback, atexit, argcomplete
 
-#sys.path.append('..')
+from argparse import RawTextHelpFormatter
 
 from io import StringIO
 from datetime import datetime, date
@@ -22,7 +22,7 @@ from Argumental.Returns import Returns
 from Argumental.Value import Value
 
 
-#________________________________________________________________________________________
+#_____________________________________________________________________________
 class Argue(object):
 	"""
 	Argue provides a way to wrap a class with methods using decorators
@@ -35,7 +35,12 @@ class Argue(object):
 		"""
 		self.logger = logging.getLogger(Argue.__qualname__)
 		self.name = name
-		self.parser = argparse.ArgumentParser(name, conflict_handler='resolve')
+		self.parser = argparse.ArgumentParser(
+			name, 
+			conflict_handler='resolve', 
+			formatter_class=RawTextHelpFormatter,
+			description=help
+		)
 		self.singles = set()
 		self.help = help
 		self.subParsers = None
@@ -226,7 +231,12 @@ class Argue(object):
 				return
 			if not self.subParsers:
 				self.subParsers = self.parser.add_subparsers(help='commands')
-			_command.parser = self.subParsers.add_parser(name, help=_command.help)
+			_command.parser = self.subParsers.add_parser(
+				name, 
+				formatter_class=RawTextHelpFormatter,
+				description=_command.help,
+				help=_command.help,
+			)
 
 		_command.parser.set_defaults(command=name, clasz=_command.fn)
 		self.commands[name] = _command
@@ -293,7 +303,12 @@ class Argue(object):
 				_operation.help += ', returns: %s %s' % (_operation.returns.type, _operation.returns.help or '')
 
 			try:
-				operation = operations.add_parser(_operation.short or _operation.name, help=_operation.help)
+				operation = operations.add_parser(
+					_operation.short or _operation.name, 
+					formatter_class=RawTextHelpFormatter,
+					description=_operation.help,
+					help=_operation.help
+				)
 			except:
 				sys.stderr.write('%s\n' % sys.exc_info()[0])
 				return
@@ -597,7 +612,12 @@ class Argue(object):
 			argcomplete.autocomplete(self.parser)
 
 			if self.subParsers:
-				argsParser = self.subParsers.add_parser('args', help='print the values for the args')
+				argsParser = self.subParsers.add_parser(
+					'args', 
+					formatter_class=RawTextHelpFormatter,
+					description='print the values for the args',
+					help='print the values for the args',
+				)
 				argsParser.set_defaults(command='args')
 
 			# add the global arguments
@@ -678,6 +698,7 @@ class Argue(object):
 		return
 
 
+#_____________________________________________________________________________
 def main():
 	"""
 	is this the room for an arguement ?
@@ -759,4 +780,5 @@ def main():
 			print(json.dumps(result, indent=4))
 
 
+#_____________________________________________________________________________
 if __name__ == '__main__': main()
