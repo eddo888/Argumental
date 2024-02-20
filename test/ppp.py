@@ -19,6 +19,6 @@ class MyCommand(object):
         return dict(p1=_p1(),p2=_p2())
 
 if __name__ == '__main__':
-    print args.execute()
+    print(args.execute())
 
 

@@ -46,5 +46,5 @@ class WhatTheFireTruck(object):
         return _format
        
 if __name__ == '__main__': 
-    print args.execute()
+    print(args.execute())
     

@@ -17,5 +17,5 @@ class NoOp(object):
         return dict(p=self.myProp)
         
 if __name__ == '__main__':
-    print args.execute()
+    print(args.execute())
     

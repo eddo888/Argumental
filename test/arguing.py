@@ -110,5 +110,5 @@ class ClassD(object):
 if __name__ == '__main__':
     parsed = args.parse()
     result = args.execute()
-    if result: print result
+    if result: print(result)
 

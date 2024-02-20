@@ -23,6 +23,6 @@ class MyOther(object):
     def m3(self,p3):
         return p3
     
-if __name__ == '__main__': print args.execute()
-
+if __name__ == '__main__':
+	print(args.execute())
 

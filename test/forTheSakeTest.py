@@ -14,7 +14,6 @@ holdme = HoldMe(verbose=False)
 def patternCheck(fields,stdout):
 	patterns = map(lambda x:re.compile('.*{.*%s.*}.*'%x), fields)
 	for pattern in patterns:
-		#print pattern.pattern
 		assert pattern.match(stdout.replace('\n','\\n'))
 		
 #============================================================
@@ -402,9 +401,6 @@ class ForTheSakeTest(unittest.TestCase):
 		ns = args.parse('-g 3 --g2 2 --g1 1 -b --two=2'.split())
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print ns
-		#for g in g1,G2,g3,g4,g5,g6:
-			#print "%s=%s"%(g,g())
 			
 		assert len(stderr) == 0
 		assert g1() == '1'
@@ -423,8 +419,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stdout
-		#print stderr
 		assert '(--one ONE | --three THREE | --two TWO)' in stdout
 		assert '(-a | -b | -c)' in stdout
 		assert '[--g4 G4]' in stdout
@@ -441,8 +435,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stdout
-		#print stderr
 		assert len(stderr) == 0
 		assert '(--x X | --y Y | --z Z)' in stdout
 		assert '(-a | -b | -c)' in stdout
@@ -456,8 +448,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stdout
-		#print stderr
 		assert "error: one of the arguments --x --y --z is required" in stderr
 		
 	#________________________________________________________
@@ -499,9 +489,6 @@ class ForTheSakeTest(unittest.TestCase):
 		results = args.execute()
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print results
-		#print stdout
-		#print stderr
 		assert len(stderr) == 0
 		assert results['a1'] == 1
 		assert results['a2'] == 'xml'
@@ -517,7 +504,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stdout
 		assert '[--p2 {a,b,c}]' in stdout
 		assert '[-a | -b | -c]' in stdout
 		assert '[-x X | -y Y | -z Z]' in stdout
@@ -535,7 +521,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stdout
 		assert '[--p2 {a,b,c}]' in stdout
 		assert '[-x X | -y Y | -z Z]' in stdout
 		assert '[-a | -b | -c]' in stdout
@@ -556,7 +541,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stdout
 		assert '[--p2 {a,b,c}]' in stdout
 		assert '[-x X | -y Y | -z Z]' in stdout
 		assert '[-a | -b | -c]' in stdout
@@ -577,7 +561,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stdout
 		assert '[--p2 {a,b,c}]' in stdout
 		assert '[-x X | -y Y | -z Z]' in stdout
 		assert '[-a | -b | -c]' in stdout
@@ -603,9 +586,7 @@ class ForTheSakeTest(unittest.TestCase):
 		])
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		results = args.execute()
-		#print results
 		dts = datetime(2017, 5, 18, 17, 22)
 		assert results['p1'] == dts
 		assert results['p2'] == dts
@@ -622,7 +603,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stdout
 		assert 'p1          p1 datetime' in stdout
 		assert '--p2 P2     p2 datetime' in stdout
 		assert '--p3 P3     p3 datetime' in stdout
@@ -636,7 +616,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		assert 'error: argument p1: invalid <lambda> value: \'2017-18-05 17:22:00\'' in stderr
 		
 	#________________________________________________________
@@ -648,7 +627,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		assert 'error: argument --p2: invalid <lambda> value: \'2017-18-05 17:22:00\'' in stderr
 		
 	#________________________________________________________
@@ -660,7 +638,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(cm)
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		assert 'error: argument --p3: invalid <lambda> value: \'2017-18-05 17:22:00\'' in stderr
 		
 	#________________________________________________________
@@ -672,7 +649,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(args.execute())
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stderr
 		assert len(stderr) == 0
 		patternCheck(['mum','bub','args'],stdout)
 		assert '-v VERBOSE, --verbose VERBOSE' in stdout
@@ -693,7 +669,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(args.execute())
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stderr
 		assert len(stderr) == 0
 		assert '-v VALUE, --value VALUE' in stdout
 		
@@ -706,7 +681,6 @@ class ForTheSakeTest(unittest.TestCase):
 			print(args.execute())
 		stdout, stderr = holdme.get(output=False)
 		holdme.unset()
-		#print stderr
 		assert len(stderr) == 0
 		assert '-V VALUE, --value VALUE' in stdout
 		
@@ -717,9 +691,7 @@ class ForTheSakeTest(unittest.TestCase):
 		args.parse('valuable -v bob do it'.split())
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		results = args.execute()
-		#print results
 		assert results == '^bob$'
 		
 	#________________________________________________________
@@ -729,9 +701,7 @@ class ForTheSakeTest(unittest.TestCase):
 		args.parse('just -V bill do it'.split())
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		results = args.execute()
-		#print results
 		assert results == '^bill$'
 		
 	#________________________________________________________
@@ -741,9 +711,7 @@ class ForTheSakeTest(unittest.TestCase):
 		args.parse('duck -V quack do it'.split())
 		stdout, stderr = holdme.get()
 		holdme.unset()
-		#print stderr
 		results = args.execute()
-		#print results
 		assert results == '^quack$'
 		
 #============================================================

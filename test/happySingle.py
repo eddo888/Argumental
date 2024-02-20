@@ -19,7 +19,7 @@ class BadBoy(object):
     def bb1(self): return 'bad'
 
 if __name__ == '__main__':
-    print args.execute()
+    print(args.execute())
     
 
     

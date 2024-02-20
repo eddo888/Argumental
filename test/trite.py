@@ -8,4 +8,4 @@ args = Argue()
 def n1(): return 'value'
 
 args.parse()
-print n1()
+print(n1())

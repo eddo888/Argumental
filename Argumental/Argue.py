@@ -2,7 +2,7 @@
 
 # PYTHON_ARGCOMPLETE_OK
 
-import os, sys, re, json, argparse, time, logging, inspect, traceback, atexit, argcomplete
+import os, sys, re, json, argparse, time, logging, inspect, traceback, atexit, argcomplete, asyncio
 
 from argparse import RawTextHelpFormatter
 
@@ -250,13 +250,15 @@ class Argue(object):
 		if len(self.singles) > 0:
 			self.subParsers = operations
 
+		# we should do this after instantiation
 		properties = list()
 		for name, property in inspect.getmembers(_command.fn, predicate=inspect.isdatadescriptor):
 			#print(name, property)
 			if hasattr(property, 'fget') and property.fget not in properties:
 				self.addMethod(_command, operations, property.fget)
 				properties.append(property.fget)
-
+		# end we should
+		
 		for name, method in inspect.getmembers(_command.fn, predicate=inspect.isfunction) + inspect.getmembers(_command.fn, predicate=inspect.ismethod):
 			#print(name, method)
 			m = getRoot(method)
@@ -529,6 +531,9 @@ class Argue(object):
 		usage: @args.operation(<Operation>...)
 		where the class Operation defines the parameters to the decorator call
 		"""
+		
+		#if inspect.iscoroutinefunction(operation):
+		#	return await operation(*__args, **__kwargs)
 
 		def _wrapit(fn):
 			fn = getRoot(fn)
@@ -669,8 +674,11 @@ class Argue(object):
 			return self.values()
 
 		if hasattr(self.parsed, 'clasz'):
+			
 			command = self.parsed.clasz()
 
+			# do the property setting here on the instance, (not the class)
+			
 			if hasattr(self.parsed, 'method'):
 				operation = getattr(command, self.parsed.method.__name__)
 
@@ -690,6 +698,9 @@ class Argue(object):
 
 				# if hasattr(command,'__del__'): atexit.register(command.__del__)
 
+				#if inspect.iscoroutinefunction(operation):
+				#	return await operation(*__args, **__kwargs)
+				
 				return operation(*__args, **__kwargs)
 
 				if hasattr(command, '__del__'): command.__del__()
